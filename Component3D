@@ -1,4 +1,4 @@
-local Definitions = loadstring(game:HttpGet("https://raw.githubusercontent.com/romblust/Compatible/main/Definition.lua"))()
+local Definitions = loadstring(game:HttpGet("https://raw.githubusercontent.com/romblust/Compatible/main/Definition"))()
 local componentGen: Definitions.componentGen = {} :: Definitions.componentGen
 componentGen.__index = componentGen
 
