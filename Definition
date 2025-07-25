@@ -1,0 +1,121 @@
+local screenGen = {
+	__index = nil,
+
+	new = function(screenGui: ScreenGui, displayDistance: number): screen3D
+		return setmetatable({
+			partIndex = {} :: {[GuiObject]: component3D},
+			rootGui = screenGui,
+			displayDistance = displayDistance,
+			rootOffset = CFrame.new()
+		}, screenGen)
+	end,
+
+	GetComponent3D = function(self: screen3D, Component2D: GuiObject): component3D?
+		return self.partIndex[Component2D]
+	end,
+
+	GetRealCanvasSize = function(self: screen3D): Vector2
+		return Vector2.new()
+	end,
+
+	GetInsetCanvasSize = function(self: screen3D): Vector2
+		return Vector2.new()
+	end,
+
+	GetIntendedCanvasSize = function(self: screen3D): Vector2
+		return Vector2.new()
+	end,
+
+	GetInset = function(self: screen3D): Vector2
+		return Vector2.new()
+	end
+}
+
+screenGen.__index = screenGen
+
+local componentGen = {
+	__index = nil,
+
+	new = function(Component2D: GuiObject, Screen3D: screen3D): component3D
+		return setmetatable({
+			enabled = false,
+			_compatibility = false,
+			component2D = Component2D,
+			surfaceGui = nil,
+			parent2D = nil,
+			screen3D = Screen3D,
+			parent3D = nil,
+			compatibilityParent3D = nil,
+			compatibilityParent2D = nil,
+			offset = CFrame.new(),
+			viewportSize = Vector2.new(),
+			conn = nil
+		}, componentGen)
+	end,
+
+	Enable = function(self: component3D): component3D
+		self.enabled = true return self
+	end,
+
+	EnableCompatibility = function(self: component3D): component3D
+		self._compatibility = true return self
+	end,
+
+	Disable = function(self: component3D): component3D
+		self.enabled = false return self
+	end,
+
+	RecomputeParent = function(self: component3D): ()
+	end,
+
+	GetStudsScreenSize = function(self: component3D, viewportSize: Vector2): Vector3
+		return Vector3.new()
+	end,
+
+	ReadWorldCFrame = function(self: component3D): CFrame
+		return CFrame.new()
+	end,
+
+	UDim2ToCFrame = function(self: component3D, position2D: UDim2): CFrame
+		return CFrame.new()
+	end,
+
+	GetCompatibilityPosition = function(self: component3D): UDim2
+		return UDim2.new()
+	end,
+
+	GetViewportSize = function(self: component3D): Vector2
+		return self.viewportSize
+	end
+}
+
+componentGen.__index = componentGen
+
+local screen3D = setmetatable({
+	partIndex = {} :: {[GuiObject]: component3D},
+	rootGui = nil,
+	displayDistance = 0,
+	rootOffset = CFrame.new()
+}, screenGen)
+
+local component3D = setmetatable({
+	enabled = false,
+	_compatibility = false,
+	component2D = nil,
+	surfaceGui = nil,
+	parent2D = nil,
+	screen3D = screen3D,
+	parent3D = nil,
+	compatibilityParent3D = nil,
+	compatibilityParent2D = nil,
+	offset = CFrame.new(),
+	viewportSize = Vector2.new(),
+	conn = nil
+}, componentGen)
+
+return {
+	screen3D = screen3D,
+	component3D = component3D,
+	screenGen = screenGen,
+	componentGen = componentGen
+}
